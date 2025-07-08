@@ -45,6 +45,10 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## API Endpoints
+
+- GraphQL Playground & API: http://localhost:3000/api
+
 ## Test
 
 ```bash

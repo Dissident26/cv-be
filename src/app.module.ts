@@ -20,6 +20,7 @@ import { LanguageModule } from './language.module';
       autoSchemaFile: true,
       playground: true,
       context: ({ req }: { req: Request }) => ({ req }),
+      path: '/api',
     }),
     UserModule,
     ProjectModule,
