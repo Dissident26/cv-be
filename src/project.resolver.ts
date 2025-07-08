@@ -39,7 +39,7 @@ export class ProjectResolver {
   @Mutation(() => ProjectType, { nullable: true })
   updateProject(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: Partial<ProjectInput>,
+    @Args('input', { type: () => ProjectInput, nullable: true }) input: Partial<ProjectInput>,
   ): ProjectType | undefined {
     const idx = projects.findIndex(p => p.id === id);
     if (idx === -1) return undefined;

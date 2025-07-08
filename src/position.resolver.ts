@@ -33,7 +33,7 @@ export class PositionResolver {
   @Mutation(() => PositionType, { nullable: true })
   updatePosition(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: Partial<PositionInput>,
+    @Args('input', { type: () => PositionInput, nullable: true }) input: Partial<PositionInput>,
   ): PositionType | undefined {
     const idx = positions.findIndex(p => p.id === id);
     if (idx === -1) return undefined;

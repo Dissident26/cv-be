@@ -47,7 +47,7 @@ export class UserResolver {
   @Mutation(() => UserType, { nullable: true })
   updateUser(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: Partial<UserInput>,
+    @Args('input', { type: () => UserInput, nullable: true }) input: Partial<UserInput>,
   ): UserType | undefined {
     const idx = users.findIndex(u => u.id === id);
     if (idx === -1) return undefined;

@@ -33,7 +33,7 @@ export class SkillResolver {
   @Mutation(() => SkillType, { nullable: true })
   updateSkill(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: Partial<SkillInput>,
+    @Args('input', { type: () => SkillInput, nullable: true }) input: Partial<SkillInput>,
   ): SkillType | undefined {
     const idx = skills.findIndex(s => s.id === id);
     if (idx === -1) return undefined;

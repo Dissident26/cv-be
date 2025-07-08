@@ -33,7 +33,7 @@ export class DepartmentResolver {
   @Mutation(() => DepartmentType, { nullable: true })
   updateDepartment(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: Partial<DepartmentInput>,
+    @Args('input', { type: () => DepartmentInput, nullable: true }) input: Partial<DepartmentInput>,
   ): DepartmentType | undefined {
     const idx = departments.findIndex(d => d.id === id);
     if (idx === -1) return undefined;

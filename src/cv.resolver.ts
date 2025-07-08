@@ -41,7 +41,7 @@ export class CVResolver {
   @Mutation(() => CVType, { nullable: true })
   updateCV(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: Partial<CVInput>,
+    @Args('input', { type: () => CVInput, nullable: true }) input: Partial<CVInput>,
   ): CVType | undefined {
     const idx = cvs.findIndex(c => c.id === id);
     if (idx === -1) return undefined;

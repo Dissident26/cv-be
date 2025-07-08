@@ -33,7 +33,7 @@ export class LanguageResolver {
   @Mutation(() => LanguageType, { nullable: true })
   updateLanguage(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input') input: Partial<LanguageInput>,
+    @Args('input', { type: () => LanguageInput, nullable: true }) input: Partial<LanguageInput>,
   ): LanguageType | undefined {
     const idx = languages.findIndex(l => l.id === id);
     if (idx === -1) return undefined;
