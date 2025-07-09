@@ -1,10 +1,10 @@
-import { User } from './user.types';
-import { Project } from './project.types';
-import { CV } from './cv.types';
-import { Department } from './department.types';
-import { Position } from './position.types';
-import { Skill } from './skills.types';
-import { Language } from './language.types';
+import { User } from './user';
+import { Project } from './project';
+import { CV } from './cv';
+import { Department } from './department';
+import { Position } from './position';
+import { Skill } from './skills';
+import { Language } from './language';
 import { faker } from '@faker-js/faker';
 
 export const users: User[] = Array.from({ length: 100 }, (_, i) => ({
