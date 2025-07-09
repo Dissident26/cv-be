@@ -5,13 +5,13 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import type { Request } from 'express';
 // Feature modules (to be implemented)
-import { UserModule } from './user';
-import { ProjectModule } from './project';
-import { CVModule } from './cv';
-import { DepartmentModule } from './department';
-import { PositionModule } from './position';
-import { SkillsModule } from './skills';
-import { LanguageModule } from './language';
+import { UserModule } from '../user';
+import { ProjectModule } from '../project';
+import { CVModule } from '../cv';
+import { DepartmentModule } from '../department';
+import { PositionModule } from '../position';  
+import { SkillsModule } from '../skills';
+import { LanguageModule } from '../language';
 
 @Module({
   imports: [

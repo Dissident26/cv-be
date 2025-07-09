@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args, ID, InputType, Field } from '@nestjs/graphql';
 import { Position, PositionType } from './position.types';
-import { positions } from './mock-data';
+import { positions } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
 
 @InputType()

@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args, ID, InputType, Field } from '@nestjs/graphql';
 import { Skill, SkillType } from './skills.types';
-import { skills } from './mock-data';
+import { skills } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
 
 @InputType()
