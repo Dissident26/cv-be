@@ -5,59 +5,60 @@ import { Department } from './department.types';
 import { Position } from './position.types';
 import { Skill } from './skills.types';
 import { Language } from './language.types';
+import { faker } from '@faker-js/faker';
 
-export const users: User[] = Array.from({ length: 10 }, (_, i) => ({
+export const users: User[] = Array.from({ length: 100 }, (_, i) => ({
   id: `user${i+1}`,
-  username: `user${i+1}`,
-  email: `user${i+1}@example.com`,
-  password: `password${i+1}`,
-  firstName: `First${i+1}`,
-  lastName: `Last${i+1}`,
+  username: faker.internet.userName(),
+  email: faker.internet.email(),
+  password: faker.internet.password(),
+  firstName: faker.person.firstName(),
+  lastName: faker.person.lastName(),
   departmentId: `dept${(i%3)+1}`,
   positionId: `pos${(i%4)+1}`,
   skills: [`skill${(i%5)+1}`],
-  languages: [`lang${(i%3)+1}`],
+  languages: [faker.location.language().name],
 }));
 
-export const projects: Project[] = Array.from({ length: 10 }, (_, i) => ({
+export const projects: Project[] = Array.from({ length: 100 }, (_, i) => ({
   id: `proj${i+1}`,
-  name: `Project ${i+1}`,
-  description: `Description for project ${i+1}`,
-  startDate: `2023-01-${(i%28)+1}`,
-  endDate: `2023-12-${(i%28)+1}`,
+  name: faker.commerce.productName(),
+  description: faker.commerce.productDescription(),
+  startDate: faker.date.past().toISOString().split('T')[0],
+  endDate: faker.date.future().toISOString().split('T')[0],
   members: [`user${(i%10)+1}`],
 }));
 
-export const cvs: CV[] = Array.from({ length: 10 }, (_, i) => ({
+export const cvs: CV[] = Array.from({ length: 100 }, (_, i) => ({
   id: `cv${i+1}`,
   userId: `user${i+1}`,
-  summary: `Summary for user${i+1}`,
-  experience: [`Experience ${i+1}`],
-  education: [`Education ${i+1}`],
+  summary: faker.lorem.sentence(),
+  experience: [faker.lorem.sentence()],
+  education: [faker.lorem.sentence()],
   skills: [`skill${(i%5)+1}`],
-  languages: [`lang${(i%3)+1}`],
+  languages: [faker.location.language().name],
 }));
 
 export const departments: Department[] = Array.from({ length: 10 }, (_, i) => ({
   id: `dept${i+1}`,
-  name: `Department ${i+1}`,
-  description: `Description for department ${i+1}`,
+  name: faker.commerce.department(),
+  description: faker.company.catchPhrase(),
 }));
 
 export const positions: Position[] = Array.from({ length: 10 }, (_, i) => ({
   id: `pos${i+1}`,
-  name: `Position ${i+1}`,
-  description: `Description for position ${i+1}`,
+  name: faker.person.jobTitle(),
+  description: faker.person.jobDescriptor(),
 }));
 
-export const skills: Skill[] = Array.from({ length: 10 }, (_, i) => ({
+export const skills: Skill[] = Array.from({ length: 50 }, (_, i) => ({
   id: `skill${i+1}`,
-  name: `Skill ${i+1}`,
-  description: `Description for skill ${i+1}`,
+  name: faker.hacker.noun(),
+  description: faker.hacker.phrase(),
 }));
 
-export const languages: Language[] = Array.from({ length: 10 }, (_, i) => ({
+export const languages: Language[] = Array.from({ length: 50 }, (_, i) => ({
   id: `lang${i+1}`,
-  name: `Language ${i+1}`,
+  name: faker.location.language().name,
   level: ['A1','A2','B1','B2','C1','C2'][i%6],
 })); 
