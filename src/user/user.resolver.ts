@@ -50,19 +50,23 @@ class UserInput {
 export class UserResolver {
   @Query(() => [UserType])
   users(): UserType[] {
-    return users;
+    return users.map(({ password, ...rest }) => rest);
   }
 
   @Query(() => UserType, { nullable: true })
   user(@Args('id', { type: () => ID }) id: string): UserType | undefined {
-    return users.find(u => u.id === id);
+    const user = users.find(u => u.id === id);
+    if (!user) return undefined;
+    const { password, ...rest } = user;
+    return rest;
   }
 
   @Mutation(() => UserType)
   createUser(@Args('input') input: UserInput): UserType {
     const user = { ...input, id: uuidv4() };
     users.push(user);
-    return user;
+    const { password, ...rest } = user;
+    return rest;
   }
 
   @Mutation(() => UserType, { nullable: true })
@@ -73,7 +77,8 @@ export class UserResolver {
     const idx = users.findIndex(u => u.id === id);
     if (idx === -1) return undefined;
     users[idx] = { ...users[idx], ...input };
-    return users[idx];
+    const { password, ...rest } = users[idx];
+    return rest;
   }
 
   @Mutation(() => Boolean)
