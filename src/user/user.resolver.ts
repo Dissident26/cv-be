@@ -49,14 +49,15 @@ class UserInput {
 }
 
 @Resolver(() => UserType)
-@UseGuards(new JwtAuthGuard(issuedTokens))
 export class UserResolver {
   @Query(() => [UserType])
+  @UseGuards(new JwtAuthGuard(issuedTokens))
   users(): UserType[] {
     return users.map(({ password, ...rest }) => rest);
   }
 
   @Query(() => UserType, { nullable: true })
+  @UseGuards(new JwtAuthGuard(issuedTokens))
   user(@Args('id', { type: () => ID }) id: string): UserType | undefined {
     const user = users.find(u => u.id === id);
     if (!user) return undefined;
@@ -65,7 +66,6 @@ export class UserResolver {
   }
 
   @Mutation(() => UserType)
-  @UseGuards() // No guard for createUser
   createUser(@Args('input') input: UserInput): UserType {
     const user = { ...input, id: uuidv4() };
     users.push(user);
@@ -74,6 +74,7 @@ export class UserResolver {
   }
 
   @Mutation(() => UserType, { nullable: true })
+  @UseGuards(new JwtAuthGuard(issuedTokens))
   updateUser(
     @Args('id', { type: () => ID }) id: string,
     @Args('input', { type: () => UserInput, nullable: true }) input: Partial<UserInput>,
@@ -86,6 +87,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(new JwtAuthGuard(issuedTokens))
   deleteUser(@Args('id', { type: () => ID }) id: string): boolean {
     const idx = users.findIndex(u => u.id === id);
     if (idx === -1) return false;
@@ -94,7 +96,6 @@ export class UserResolver {
   }
 
   @Mutation(() => LoginResponse, { nullable: true })
-  @UseGuards() // No guard for login
   login(@Args('input') input: LoginInput): LoginResponse | null {
     const user = users.find(u => u.username === input.username && u.password === input.password);
     if (!user) return null;
