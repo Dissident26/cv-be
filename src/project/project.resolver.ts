@@ -2,6 +2,10 @@ import { Resolver, Query, Mutation, Args, ID, InputType, Field } from '@nestjs/g
 import { Project, ProjectType } from './project.types';
 import { projects } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
+
+const issuedTokens = require('../user/user.resolver').issuedTokens;
 
 @InputType()
 class ProjectInput {
@@ -18,6 +22,7 @@ class ProjectInput {
 }
 
 @Resolver(() => ProjectType)
+@UseGuards(new JwtAuthGuard(issuedTokens))
 export class ProjectResolver {
   @Query(() => [ProjectType])
   projects(): ProjectType[] {

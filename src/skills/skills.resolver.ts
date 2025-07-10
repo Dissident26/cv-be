@@ -2,6 +2,10 @@ import { Resolver, Query, Mutation, Args, ID, InputType, Field } from '@nestjs/g
 import { Skill, SkillType } from './skills.types';
 import { skills } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
+
+const issuedTokens = require('../user/user.resolver').issuedTokens;
 
 @InputType()
 class SkillInput {
@@ -12,6 +16,7 @@ class SkillInput {
 }
 
 @Resolver(() => SkillType)
+@UseGuards(new JwtAuthGuard(issuedTokens))
 export class SkillResolver {
   @Query(() => [SkillType])
   skills(): SkillType[] {

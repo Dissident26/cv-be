@@ -41,4 +41,6 @@ export interface User {
   positionId: string;
   skills: string[];
   languages: string[];
-} 
+}
+
+export { LoginResponse, LoginInput } from './user.resolver';

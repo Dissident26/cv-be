@@ -1,7 +1,27 @@
-import { Resolver, Query, Mutation, Args, ID, InputType, Field } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID, InputType, Field, ObjectType } from '@nestjs/graphql';
 import { User, UserType } from './user.types';
 import { users } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
+import * as jwt from 'jsonwebtoken';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+
+const JWT_SECRET = 'dev_secret'; // In production, use env vars
+const issuedTokens = new Set<string>(); // In-memory token store
+
+@ObjectType()
+class LoginResponse {
+  @Field()
+  accessToken: string;
+}
+
+@InputType()
+class LoginInput {
+  @Field()
+  username: string;
+  @Field()
+  password: string;
+}
 
 @InputType()
 class UserInput {
@@ -26,6 +46,7 @@ class UserInput {
 }
 
 @Resolver(() => UserType)
+@UseGuards(new JwtAuthGuard(issuedTokens))
 export class UserResolver {
   @Query(() => [UserType])
   users(): UserType[] {
@@ -62,4 +83,16 @@ export class UserResolver {
     users.splice(idx, 1);
     return true;
   }
-} 
+
+  @Mutation(() => LoginResponse, { nullable: true })
+  login(@Args('input') input: LoginInput): LoginResponse | null {
+    const user = users.find(u => u.username === input.username && u.password === input.password);
+    if (!user) return null;
+    const payload = { sub: user.id, username: user.username };
+    const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+    issuedTokens.add(accessToken);
+    return { accessToken };
+  }
+}
+
+export { LoginResponse, LoginInput }; 

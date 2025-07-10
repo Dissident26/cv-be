@@ -9,7 +9,7 @@ import { faker } from '@faker-js/faker';
 
 export const users: User[] = Array.from({ length: 100 }, (_, i) => ({
   id: `user${i+1}`,
-  username: faker.internet.userName(),
+  username: faker.internet.username(),
   email: faker.internet.email(),
   password: faker.internet.password(),
   firstName: faker.person.firstName(),
@@ -62,3 +62,5 @@ export const languages: Language[] = Array.from({ length: 50 }, (_, i) => ({
   name: faker.location.language().name,
   level: ['A1','A2','B1','B2','C1','C2'][i%6],
 })); 
+
+console.log(users.slice(0, 3));

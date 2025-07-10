@@ -2,6 +2,10 @@ import { Resolver, Query, Mutation, Args, ID, InputType, Field } from '@nestjs/g
 import { CV, CVType } from './cv.types';
 import { cvs } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
+
+const issuedTokens = require('../user/user.resolver').issuedTokens;
 
 @InputType()
 class CVInput {
@@ -20,6 +24,7 @@ class CVInput {
 }
 
 @Resolver(() => CVType)
+@UseGuards(new JwtAuthGuard(issuedTokens))
 export class CVResolver {
   @Query(() => [CVType])
   cvs(): CVType[] {

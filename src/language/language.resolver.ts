@@ -2,6 +2,10 @@ import { Resolver, Query, Mutation, Args, ID, InputType, Field } from '@nestjs/g
 import { Language, LanguageType } from './language.types';
 import { languages } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
+
+const issuedTokens = require('../user/user.resolver').issuedTokens;
 
 @InputType()
 class LanguageInput {
@@ -12,6 +16,7 @@ class LanguageInput {
 }
 
 @Resolver(() => LanguageType)
+@UseGuards(new JwtAuthGuard(issuedTokens))
 export class LanguageResolver {
   @Query(() => [LanguageType])
   languages(): LanguageType[] {
