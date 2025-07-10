@@ -13,6 +13,9 @@ const issuedTokens = new Set<string>(); // In-memory token store
 class LoginResponse {
   @Field()
   accessToken: string;
+
+  @Field(() => UserType)
+  user: UserType;
 }
 
 @InputType()
@@ -62,6 +65,7 @@ export class UserResolver {
   }
 
   @Mutation(() => UserType)
+  @UseGuards() // No guard for createUser
   createUser(@Args('input') input: UserInput): UserType {
     const user = { ...input, id: uuidv4() };
     users.push(user);
@@ -90,13 +94,15 @@ export class UserResolver {
   }
 
   @Mutation(() => LoginResponse, { nullable: true })
+  @UseGuards() // No guard for login
   login(@Args('input') input: LoginInput): LoginResponse | null {
     const user = users.find(u => u.username === input.username && u.password === input.password);
     if (!user) return null;
     const payload = { sub: user.id, username: user.username };
     const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
     issuedTokens.add(accessToken);
-    return { accessToken };
+    const { password, ...userWithoutPassword } = user;
+    return { accessToken, user: userWithoutPassword };
   }
 }
 
