@@ -1,4 +1,13 @@
-import { Resolver, Query, Mutation, Args, ID, InputType, Field, ObjectType } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  InputType,
+  Field,
+  ObjectType,
+} from '@nestjs/graphql';
 import { User, UserType } from './user.types';
 import { users } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
@@ -21,7 +30,7 @@ class LoginResponse {
 @InputType()
 class LoginInput {
   @Field()
-  username: string;
+  email: string;
   @Field()
   password: string;
 }
@@ -59,7 +68,7 @@ export class UserResolver {
   @Query(() => UserType, { nullable: true })
   @UseGuards(new JwtAuthGuard(issuedTokens))
   user(@Args('id', { type: () => ID }) id: string): UserType | undefined {
-    const user = users.find(u => u.id === id);
+    const user = users.find((u) => u.id === id);
     if (!user) return undefined;
     const { password, ...rest } = user;
     return rest;
@@ -77,9 +86,10 @@ export class UserResolver {
   @UseGuards(new JwtAuthGuard(issuedTokens))
   updateUser(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input', { type: () => UserInput, nullable: true }) input: Partial<UserInput>,
+    @Args('input', { type: () => UserInput, nullable: true })
+    input: Partial<UserInput>,
   ): UserType | undefined {
-    const idx = users.findIndex(u => u.id === id);
+    const idx = users.findIndex((u) => u.id === id);
     if (idx === -1) return undefined;
     users[idx] = { ...users[idx], ...input };
     const { password, ...rest } = users[idx];
@@ -89,7 +99,7 @@ export class UserResolver {
   @Mutation(() => Boolean)
   @UseGuards(new JwtAuthGuard(issuedTokens))
   deleteUser(@Args('id', { type: () => ID }) id: string): boolean {
-    const idx = users.findIndex(u => u.id === id);
+    const idx = users.findIndex((u) => u.id === id);
     if (idx === -1) return false;
     users.splice(idx, 1);
     return true;
@@ -97,7 +107,9 @@ export class UserResolver {
 
   @Mutation(() => LoginResponse, { nullable: true })
   login(@Args('input') input: LoginInput): LoginResponse | null {
-    const user = users.find(u => u.username === input.username && u.password === input.password);
+    const user = users.find(
+      (u) => u.email === input.email && u.password === input.password,
+    );
     if (!user) return null;
     const payload = { sub: user.id, username: user.username };
     const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
@@ -107,4 +119,4 @@ export class UserResolver {
   }
 }
 
-export { LoginResponse, LoginInput }; 
+export { LoginResponse, LoginInput };
