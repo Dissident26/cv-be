@@ -11,23 +11,23 @@ export class UserType {
   @Field()
   email: string;
 
-  @Field()
-  firstName: string;
+  @Field({ nullable: true })
+  firstName?: string;
 
-  @Field()
-  lastName: string;
+  @Field({ nullable: true })
+  lastName?: string;
 
-  @Field()
-  departmentId: string;
+  @Field({ nullable: true })
+  departmentId?: string;
 
-  @Field()
-  positionId: string;
+  @Field({ nullable: true })
+  positionId?: string;
 
-  @Field(() => [String])
-  skills: string[];
+  @Field(() => [String], { nullable: true })
+  skills?: string[] = [];
 
-  @Field(() => [String])
-  languages: string[];
+  @Field(() => [String], { nullable: true })
+  languages?: string[] = [];
 }
 
 export interface User {
@@ -35,12 +35,12 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  departmentId: string;
-  positionId: string;
-  skills: string[];
-  languages: string[];
+  firstName?: string;
+  lastName?: string;
+  departmentId?: string;
+  positionId?: string;
+  skills?: string[];
+  languages?: string[];
 }
 
 export { LoginResponse, LoginInput } from './user.resolver';

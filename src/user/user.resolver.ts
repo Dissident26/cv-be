@@ -43,18 +43,18 @@ class UserInput {
   email: string;
   @Field()
   password: string;
-  @Field()
-  firstName: string;
-  @Field()
-  lastName: string;
-  @Field()
-  departmentId: string;
-  @Field()
-  positionId: string;
-  @Field(() => [String])
-  skills: string[];
-  @Field(() => [String])
-  languages: string[];
+  @Field({ nullable: true })
+  firstName?: string;
+  @Field({ nullable: true })
+  lastName?: string;
+  @Field({ nullable: true })
+  departmentId?: string;
+  @Field({ nullable: true })
+  positionId?: string;
+  @Field(() => [String], { nullable: true })
+  skills?: string[];
+  @Field(() => [String], { nullable: true })
+  languages?: string[];
 }
 
 @Resolver(() => UserType)
@@ -76,7 +76,16 @@ export class UserResolver {
 
   @Mutation(() => UserType)
   createUser(@Args('input') input: UserInput): UserType {
-    const user = { ...input, id: uuidv4() };
+    const user = {
+      ...input,
+      id: uuidv4(),
+      firstName: input.firstName ?? '',
+      lastName: input.lastName ?? '',
+      departmentId: input.departmentId ?? '',
+      positionId: input.positionId ?? '',
+      skills: input.skills ?? [],
+      languages: input.languages ?? [],
+    };
     users.push(user);
     const { password, ...rest } = user;
     return rest;
@@ -91,7 +100,16 @@ export class UserResolver {
   ): UserType | undefined {
     const idx = users.findIndex((u) => u.id === id);
     if (idx === -1) return undefined;
-    users[idx] = { ...users[idx], ...input };
+    users[idx] = {
+      ...users[idx],
+      ...input,
+      firstName: input.firstName ?? users[idx].firstName ?? '',
+      lastName: input.lastName ?? users[idx].lastName ?? '',
+      departmentId: input.departmentId ?? users[idx].departmentId ?? '',
+      positionId: input.positionId ?? users[idx].positionId ?? '',
+      skills: input.skills ?? users[idx].skills ?? [],
+      languages: input.languages ?? users[idx].languages ?? [],
+    };
     const { password, ...rest } = users[idx];
     return rest;
   }
