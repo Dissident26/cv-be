@@ -37,8 +37,8 @@ class LoginInput {
 
 @InputType()
 class UserInput {
-  @Field()
-  username: string;
+  @Field({ nullable: true })
+  username?: string;
   @Field()
   email: string;
   @Field()
@@ -85,6 +85,7 @@ export class UserResolver {
       positionId: input.positionId ?? '',
       skills: input.skills ?? [],
       languages: input.languages ?? [],
+      username: input.username ?? '',
     };
     users.push(user);
     const { password, ...rest } = user;
@@ -109,6 +110,7 @@ export class UserResolver {
       positionId: input.positionId ?? users[idx].positionId ?? '',
       skills: input.skills ?? users[idx].skills ?? [],
       languages: input.languages ?? users[idx].languages ?? [],
+      username: input.username ?? users[idx].username ?? '',
     };
     const { password, ...rest } = users[idx];
     return rest;
@@ -129,7 +131,7 @@ export class UserResolver {
       (u) => u.email === input.email && u.password === input.password,
     );
     if (!user) return null;
-    const payload = { sub: user.id, username: user.username };
+    const payload = { sub: user.id, username: user.username ?? '' };
     const accessToken = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
     issuedTokens.add(accessToken);
     const { password, ...userWithoutPassword } = user;

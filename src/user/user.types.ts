@@ -5,8 +5,8 @@ export class UserType {
   @Field(() => ID)
   id: string;
 
-  @Field()
-  username: string;
+  @Field({ nullable: true })
+  username?: string;
 
   @Field()
   email: string;
@@ -32,7 +32,7 @@ export class UserType {
 
 export interface User {
   id: string;
-  username: string;
+  username?: string;
   email: string;
   password: string;
   firstName?: string;
