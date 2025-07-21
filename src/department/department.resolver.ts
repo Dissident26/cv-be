@@ -1,11 +1,18 @@
-import { Resolver, Query, Mutation, Args, ID, InputType, Field } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  InputType,
+  Field,
+} from '@nestjs/graphql';
 import { Department, DepartmentType } from './department.types';
 import { departments } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
-
-const issuedTokens = require('../user/user.resolver').issuedTokens;
+import { issuedTokens } from 'src/user';
 
 @InputType()
 class DepartmentInput {
@@ -24,8 +31,10 @@ export class DepartmentResolver {
   }
 
   @Query(() => DepartmentType, { nullable: true })
-  department(@Args('id', { type: () => ID }) id: string): DepartmentType | undefined {
-    return departments.find(d => d.id === id);
+  department(
+    @Args('id', { type: () => ID }) id: string,
+  ): DepartmentType | undefined {
+    return departments.find((d) => d.id === id);
   }
 
   @Mutation(() => DepartmentType)
@@ -38,9 +47,10 @@ export class DepartmentResolver {
   @Mutation(() => DepartmentType, { nullable: true })
   updateDepartment(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input', { type: () => DepartmentInput, nullable: true }) input: Partial<DepartmentInput>,
+    @Args('input', { type: () => DepartmentInput, nullable: true })
+    input: Partial<DepartmentInput>,
   ): DepartmentType | undefined {
-    const idx = departments.findIndex(d => d.id === id);
+    const idx = departments.findIndex((d) => d.id === id);
     if (idx === -1) return undefined;
     departments[idx] = { ...departments[idx], ...input };
     return departments[idx];
@@ -48,9 +58,9 @@ export class DepartmentResolver {
 
   @Mutation(() => Boolean)
   deleteDepartment(@Args('id', { type: () => ID }) id: string): boolean {
-    const idx = departments.findIndex(d => d.id === id);
+    const idx = departments.findIndex((d) => d.id === id);
     if (idx === -1) return false;
     departments.splice(idx, 1);
     return true;
   }
-} 
+}

@@ -1,11 +1,18 @@
-import { Resolver, Query, Mutation, Args, ID, InputType, Field } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  InputType,
+  Field,
+} from '@nestjs/graphql';
 import { Language, LanguageType } from './language.types';
 import { languages } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
-
-const issuedTokens = require('../user/user.resolver').issuedTokens;
+import { issuedTokens } from 'src/user';
 
 @InputType()
 class LanguageInput {
@@ -24,8 +31,10 @@ export class LanguageResolver {
   }
 
   @Query(() => LanguageType, { nullable: true })
-  language(@Args('id', { type: () => ID }) id: string): LanguageType | undefined {
-    return languages.find(l => l.id === id);
+  language(
+    @Args('id', { type: () => ID }) id: string,
+  ): LanguageType | undefined {
+    return languages.find((l) => l.id === id);
   }
 
   @Mutation(() => LanguageType)
@@ -38,9 +47,10 @@ export class LanguageResolver {
   @Mutation(() => LanguageType, { nullable: true })
   updateLanguage(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input', { type: () => LanguageInput, nullable: true }) input: Partial<LanguageInput>,
+    @Args('input', { type: () => LanguageInput, nullable: true })
+    input: Partial<LanguageInput>,
   ): LanguageType | undefined {
-    const idx = languages.findIndex(l => l.id === id);
+    const idx = languages.findIndex((l) => l.id === id);
     if (idx === -1) return undefined;
     languages[idx] = { ...languages[idx], ...input };
     return languages[idx];
@@ -48,9 +58,9 @@ export class LanguageResolver {
 
   @Mutation(() => Boolean)
   deleteLanguage(@Args('id', { type: () => ID }) id: string): boolean {
-    const idx = languages.findIndex(l => l.id === id);
+    const idx = languages.findIndex((l) => l.id === id);
     if (idx === -1) return false;
     languages.splice(idx, 1);
     return true;
   }
-} 
+}

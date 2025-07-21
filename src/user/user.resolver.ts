@@ -16,7 +16,7 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 const JWT_SECRET = 'dev_secret'; // In production, use env vars
-const issuedTokens = new Set<string>(); // In-memory token store
+export const issuedTokens = new Set<string>(); // In-memory token store
 
 @ObjectType()
 class LoginResponse {

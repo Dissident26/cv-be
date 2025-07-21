@@ -1,11 +1,18 @@
-import { Resolver, Query, Mutation, Args, ID, InputType, Field } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  InputType,
+  Field,
+} from '@nestjs/graphql';
 import { Skill, SkillType } from './skills.types';
 import { skills } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
-
-const issuedTokens = require('../user/user.resolver').issuedTokens;
+import { issuedTokens } from 'src/user';
 
 @InputType()
 class SkillInput {
@@ -25,7 +32,7 @@ export class SkillResolver {
 
   @Query(() => SkillType, { nullable: true })
   skill(@Args('id', { type: () => ID }) id: string): SkillType | undefined {
-    return skills.find(s => s.id === id);
+    return skills.find((s) => s.id === id);
   }
 
   @Mutation(() => SkillType)
@@ -38,9 +45,10 @@ export class SkillResolver {
   @Mutation(() => SkillType, { nullable: true })
   updateSkill(
     @Args('id', { type: () => ID }) id: string,
-    @Args('input', { type: () => SkillInput, nullable: true }) input: Partial<SkillInput>,
+    @Args('input', { type: () => SkillInput, nullable: true })
+    input: Partial<SkillInput>,
   ): SkillType | undefined {
-    const idx = skills.findIndex(s => s.id === id);
+    const idx = skills.findIndex((s) => s.id === id);
     if (idx === -1) return undefined;
     skills[idx] = { ...skills[idx], ...input };
     return skills[idx];
@@ -48,9 +56,9 @@ export class SkillResolver {
 
   @Mutation(() => Boolean)
   deleteSkill(@Args('id', { type: () => ID }) id: string): boolean {
-    const idx = skills.findIndex(s => s.id === id);
+    const idx = skills.findIndex((s) => s.id === id);
     if (idx === -1) return false;
     skills.splice(idx, 1);
     return true;
   }
-} 
+}
