@@ -16,7 +16,7 @@ import { issuedTokens } from 'src/user';
 
 @InputType()
 class CVInput {
-  @Field({ nullable: true })
+  @Field()
   userId?: string;
   @Field()
   summary: string;
