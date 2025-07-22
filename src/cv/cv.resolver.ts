@@ -7,7 +7,7 @@ import {
   InputType,
   Field,
 } from '@nestjs/graphql';
-import { CV, CVType } from './cv.types';
+import { CVType } from './cv.types';
 import { cvs } from '../mock-data';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -20,13 +20,13 @@ class CVInput {
   userId?: string;
   @Field()
   summary: string;
-  @Field(() => [String], { nullable: true })
+  @Field(() => [String], { nullable: "itemsAndList" })
   experience?: string[];
   @Field(() => [String])
   education: string[];
-  @Field(() => [String], { nullable: true })
+  @Field(() => [String], { nullable: "itemsAndList" })
   skills?: string[];
-  @Field(() => [String], { nullable: true })
+  @Field(() => [String], { nullable: "itemsAndList" })
   languages?: string[];
   @Field()
   name: string;

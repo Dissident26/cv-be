@@ -8,13 +8,13 @@ export class CVType {
   userId?: string;
   @Field()
   summary: string;
-  @Field(() => [String], { nullable: true })
+  @Field(() => [String], { nullable: "itemsAndList" })
   experience?: string[];
   @Field(() => [String])
   education: string[];
-  @Field(() => [String], { nullable: true })
+  @Field(() => [String], { nullable: "itemsAndList" })
   skills?: string[];
-  @Field(() => [String], { nullable: true })
+  @Field(() => [String], { nullable: "itemsAndList" })
   languages?: string[];
   @Field()
   name: string;
