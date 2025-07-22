@@ -16,18 +16,20 @@ import { issuedTokens } from 'src/user';
 
 @InputType()
 class CVInput {
-  @Field()
-  userId: string;
+  @Field({ nullable: true })
+  userId?: string;
   @Field()
   summary: string;
-  @Field(() => [String])
-  experience: string[];
+  @Field(() => [String], { nullable: true })
+  experience?: string[];
   @Field(() => [String])
   education: string[];
-  @Field(() => [String])
-  skills: string[];
-  @Field(() => [String])
-  languages: string[];
+  @Field(() => [String], { nullable: true })
+  skills?: string[];
+  @Field(() => [String], { nullable: true })
+  languages?: string[];
+  @Field()
+  name: string;
 }
 
 @Resolver(() => CVType)

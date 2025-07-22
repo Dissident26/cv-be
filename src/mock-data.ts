@@ -33,10 +33,11 @@ export const cvs: CV[] = Array.from({ length: 100 }, (_, i) => ({
   id: `cv${i+1}`,
   userId: `user${i+1}`,
   summary: faker.lorem.sentence(),
-  experience: [faker.lorem.sentence()],
   education: [faker.lorem.sentence()],
-  skills: [`skill${(i%5)+1}`],
-  languages: [faker.location.language().name],
+  name: faker.lorem.sentence(),
+  experience: Math.random() > 0.5 ? [faker.lorem.sentence()] : undefined,
+  skills: Math.random() > 0.5 ? [`skill${(i%5)+1}`] : undefined,
+  languages: Math.random() > 0.5 ? [faker.location.language().name] : undefined,
 }));
 
 export const departments: Department[] = Array.from({ length: 10 }, (_, i) => ({
