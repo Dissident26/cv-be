@@ -16,8 +16,8 @@ export class CVType {
   skills?: string[];
   @Field(() => [String], { nullable: true })
   languages?: string[];
-  @Field({ nullable: true })
-  name?: string;
+  @Field()
+  name: string;
 }
 
 export interface CV {
@@ -28,5 +28,5 @@ export interface CV {
   education: string[];
   skills?: string[];
   languages?: string[];
-  name?: string;
+  name: string;
 } 
